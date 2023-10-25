@@ -1,16 +1,31 @@
 # csm-espanso
 A collection of frequently used CSM text expansion shortcuts.
 
+# Why should I use this?
+Have you been using sshrc or wrapper scripts to automate frequent CSM tasks?
+
+Do you forget `cray` commands regularly?
+
+Are you tired of typing "--format json"?
+
+This espanso library offers the following quality of life improvements:
+* The text expansions are available everywhere.
+* No more special configs or scripts to copy from one environment to another.
+* See the actual commands being executed.
+* Commands are present in history and are reverse searchable.
+* Benefit from the shortcuts provided by the community.
+* :boom: Supercharge your work by pairing `csm-espanso` with [superinit](https://github.com/Cray-HPE/superinit) :boom:
+
 # Installation
 Follow the espanso package installation for your OS:
 https://espanso.org/install/
 
-Install this package with:
+Once `espanso` is installed, add this package with:
 ```
 espanso install csm --git git@github.com:alanm-hpe/csm-espanso.git --external
 ```
 
-Once installed, this package should be visible in the espanso package list:
+Once added, this package should be visible in the espanso package list:
 ```
 $ espanso package list
 Installed packages:
@@ -22,7 +37,6 @@ You may need to restart espanso:
 ```
 espanso restart
 ```
-
 
 # Requires
 The CSM espanso text expansion requires the commands `cray` and `sat`.
