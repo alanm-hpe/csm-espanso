@@ -71,10 +71,10 @@ matches:
   #######
   - trigger: ":csd"
     label: "CFS - describe a session by name or UUID"
-    replace: "cray cfs sessions describe"
+    replace: "cray cfs sessions describe "
   - trigger: ":ccd"
     label: "CFS - describe a component by name or UUID"
-    replace: "cray cfs components describe"
+    replace: "cray cfs components describe "
   - trigger: ":cfslogs"
     label: "CFS - show logs for a session by name or UUID"
     replace: ";kubectl -n services logs job/$(cray cfs sessions describe ${CFS_SESSION} --format json | jq -r '.status.session.job') -c ansible"
@@ -84,7 +84,7 @@ matches:
   #######
   - trigger: ":hihd"
     label: "HSM - describe a hardware component"
-    replace: "cray hsm inventory hardware describe"
+    replace: "cray hsm inventory hardware describe "
 
   #######
   # nid #

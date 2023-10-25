@@ -6,19 +6,18 @@ Have you been using sshrc or wrapper scripts to automate frequent CSM tasks?
 
 Do you forget `cray` commands regularly?
 
-Are you tired of typing "--format json"?
+Are you tired of typing `--format json`?
 
 This espanso library offers the following quality of life improvements:
 * The text expansions are available everywhere.
 * No more special configs or scripts to copy from one environment to another.
-* See the actual commands being executed.
+* See or modify the commands to be executed before they run.
 * Commands are present in history and are reverse searchable.
 * Benefit from the shortcuts provided by the community.
 * :boom: Supercharge your work by pairing `csm-espanso` with [superinit](https://github.com/Cray-HPE/superinit) :boom:
 
 # Installation
-Follow the espanso package installation for your OS:
-https://espanso.org/install/
+Follow the espanso [installation instructions](https://espanso.org/install) for your OS.
 
 Once `espanso` is installed, add this package with:
 ```
