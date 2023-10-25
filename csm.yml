@@ -1,0 +1,132 @@
+# espanso match file
+
+# For a complete introduction, visit the official docs at: https://espanso.org/docs/
+
+# You can use this file to define the base matches (aka snippets)
+# that will be available in every application when using espanso.
+
+# Matches are substitution rules: when you type the "trigger" string
+# it gets replaced by the "replace" string.
+matches:
+  - trigger: ":fj"
+    label: Add --format json
+    replace: "--format json"
+  - trigger: ":efj"
+    label: Set env for json
+    replace: "export CRAY_FORMAT=json"
+  - trigger: ":ns"
+    label: Set namespace to services
+    replace: "-n services"
+
+  #######
+  # CSM #
+  #######
+  - trigger: ":cpc"
+    label: "Edit the cray product catalog"
+    replace: "kubectl edit -n services cm/cray-product-catalog"
+
+  #######
+  # BOS #
+  #######
+  - trigger: ":cbstd"
+    label: "BOS - describe a session template by name or UUID"
+    replace: "cray bos sessiontemplates describe "
+  - trigger: ":cbsc"
+    label: "BOS - reboot a node with template"
+    replace: "cray bos sessions create --limit x --name s --template-name s --operation reboot"
+  - trigger: ":cbsd"
+    label: "BOS - reboot a node with template"
+    replace: "cray bos sessions describe "
+
+  #######
+  # SAT #
+  #######
+  - trigger: ":ssa"
+    label: "SAT - get status for Application Nodes"
+    replace: "sat status --no-borders --filter Role=Application"
+  - trigger: ":ssm"
+    label: "SAT - get status for Management Nodes"
+    replace: "sat status --no-borders --filter Role=Management"
+  - trigger: ":ssc"
+    label: "SAT - get status for Compute Nodes"
+    replace: "sat status --no-borders --filter Role=Compute"
+  - trigger: ":sfs"
+    label: "SAT - show only --fields Alias,State"
+    replace: "--fields Alias,State"
+
+  #######
+  # VCS #
+  #######
+  - trigger: ":vcscreds"
+    label: "VCS - populate credentials in env vars"
+    replace: 'VCS_USER=$(kubectl get secret -n services vcs-user-credentials --template="{{.data.vcs_username}}"
+      | base64 --decode); VCS_PASS=$(kubectl get secret -n services vcs-user-credentials
+      --template="{{.data.vcs_password}}" | base64 --decode)'
+  - trigger: ":vcsclone"
+    label: "VCS - clone a repo with populate credentials"
+    replace: 'git clone https://"${VCS_USER}":"${VCS_PASS}"@api-gw-service-nmn.local/vcs/cray/uan-config-management'
+
+  #######
+  # CFS #
+  #######
+  - trigger: ":csd"
+    label: "CFS - describe a session by name or UUID"
+    replace: "cray cfs sessions describe"
+  - trigger: ":ccd"
+    label: "CFS - describe a component by name or UUID"
+    replace: "cray cfs components describe"
+  - trigger: ":cfslogs"
+    label: "CFS - show logs for a session by name or UUID"
+    replace: ";kubectl -n services logs job/$(cray cfs sessions describe ${CFS_SESSION} --format json | jq -r '.status.session.job') -c ansible"
+
+  #######
+  # HSM #
+  #######
+  - trigger: ":hihd"
+    label: "HSM - describe a hardware component"
+    replace: "cray hsm inventory hardware describe"
+
+  #######
+  # nid #
+  #######
+  - trigger: ":xname"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: choice
+        params:
+          values:
+            - label: "ncn-m001"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-m001\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-m002"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-m002\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-m003"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-m003\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-w001"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-w001\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-w002"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-w002\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-w003"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-w003\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-s001"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-s001\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-s002"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-s002\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "ncn-s003"
+              id: "$(sat status --no-borders --filter Aliases=\\\"ncn-s003\\\" --fields xname --no-headings | tr -d ' ')"
+            - label: "uan01"
+              id: "$(sat status --no-borders --filter Aliases=uan01 --fields xname --no-headings | tr -d ' ')"
+            - label: "uan02"
+              id: "$(sat status --no-borders --filter Aliases=uan02 --fields xname --no-headings | tr -d ' ')"
+            - label: "uan03"
+              id: "$(sat status --no-borders --filter Aliases=uan03 --fields xname --no-headings | tr -d ' ')"
+            - label: "uan04"
+              id: "$(sat status --no-borders --filter Aliases=uan04 --fields xname --no-headings | tr -d ' ')"
+            - label: "nid000001"
+              id: "$(sat status --no-borders --filter Aliases=nid000001 --fields xname --no-headings | tr -d ' ')"
+            - label: "nid000002"
+              id: "$(sat status --no-borders --filter Aliases=nid000002 --fields xname --no-headings | tr -d ' ')"
+            - label: "nid000003"
+              id: "$(sat status --no-borders --filter Aliases=nid000003 --fields xname --no-headings | tr -d ' ')"
+            - label: "nid000004"
+              id: "$(sat status --no-borders --filter Aliases=nid000004 --fields xname --no-headings | tr -d ' ')"
