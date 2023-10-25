@@ -1,6 +1,6 @@
 name: "csm"
 title: "CSM Espanso Package"
 description: "Frequently used text expansion shortcuts for Cray System Managment"
-version: "0.1.0"
+version: "0.1.1"
 author: "Alan Mutschelknaus (alanm@hpe.com)"
 homepage: "https://github.com/alanm-hpe/csm-espanso"
