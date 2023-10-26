@@ -28,13 +28,13 @@ matches:
   #######
   # BOS #
   #######
-  - trigger: ":cbstd"
+  - trigger: ":bstd"
     label: "BOS - describe a session template by name or UUID"
     replace: "cray bos sessiontemplates describe "
-  - trigger: ":cbsc"
+  - trigger: ":bsc"
     label: "BOS - reboot a node with template"
     replace: "cray bos sessions create --limit x --name s --template-name s --operation reboot"
-  - trigger: ":cbsd"
+  - trigger: ":bsd"
     label: "BOS - reboot a node with template"
     replace: "cray bos sessions describe "
 
@@ -65,6 +65,18 @@ matches:
   - trigger: ":vcsclone"
     label: "VCS - clone a repo with populate credentials"
     replace: 'git clone https://"${VCS_USER}":"${VCS_PASS}"@api-gw-service-nmn.local/vcs/cray/uan-config-management'
+
+  #######
+  # Nex #
+  #######
+  - trigger: ":nexuscreds"
+    label: "Nexus - populate credentials in env vars"
+    replace: 'NEXUS_USER=$(kubectl get secret -n nexus nexus-admin-credential --template="{{.data.username}}"
+      | base64 --decode); NEXUS_PASS=$(kubectl get secret -n nexus nexus-admin-credential
+      --template="{{.data.password}}" | base64 --decode)'
+  - trigger: ":ppush"
+    label: "Podman - Push a container image to Nexus"
+    replace: 'podman push --creds \"\$NEXUS_USER:\$NEXUS_PASS\"'
 
   #######
   # CFS #
