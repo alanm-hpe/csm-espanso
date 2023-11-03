@@ -8,15 +8,41 @@
 # Matches are substitution rules: when you type the "trigger" string
 # it gets replaced by the "replace" string.
 matches:
+  ########
+  # Cray #
+  ########
   - trigger: ":fj"
     label: Add --format json
     replace: "--format json"
   - trigger: ":efj"
     label: Set env for json
     replace: "export CRAY_FORMAT=json"
+
+  #######
+  # HPE #
+  #######
+  - trigger: ":setproxy"
+    label: "Set proxy for HPE environment"
+    replace: "export https_proxy='http://hpeproxy.its.hpecorp.net:443/' http_proxy='http://hpeproxy.its.hpecorp.net:443/'"
+  - trigger: ":unsetproxy"
+    label: "Unset proxy for HPE environment"
+    replace: "unset https_proxy http_proxy"
+
+  #######
+  # K8S #
+  #######
   - trigger: ":ns"
-    label: Set namespace to services
+    label: "Kubernetes - Set namespace to services"
     replace: "-n services"
+  - trigger: ":kgp"
+    label: "Kubernetes - Get pods"
+    replace: "kubectl get pods -n services"
+  - trigger: ":kd"
+    label: "Kubernetes - Describe"
+    replace: "kubectl describe -n services "
+  - trigger: ":kl"
+    label: "Kubernetes - Pod Logs"
+    replace: "kubectl logs -n services pod/"
 
   #######
   # CSM #
@@ -33,17 +59,24 @@ matches:
     replace: "cray bos sessiontemplates describe "
   - trigger: ":bsc"
     label: "BOS - reboot a node with template"
-    replace: "cray bos sessions create --limit x --name s --template-name s --operation reboot"
+    replace: "cray bos sessions create --operation reboot --template-name  "
   - trigger: ":bsd"
-    label: "BOS - reboot a node with template"
+    label: "BOS - describe a session"
     replace: "cray bos sessions describe "
+
+  #######
+  # IMS #
+  #######
+  - trigger: ":iil"
+    label: "IMS - Images list"
+    replace: "cray ims images list"
 
   #######
   # SAT #
   #######
   - trigger: ":ssa"
     label: "SAT - get status for Application Nodes"
-    replace: "sat status --no-borders --filter Role=Application"
+    replace: "sat --loglevel-stderr error status --no-borders --filter Role=Application"
   - trigger: ":ssm"
     label: "SAT - get status for Management Nodes"
     replace: "sat status --no-borders --filter Role=Management"
@@ -53,6 +86,12 @@ matches:
   - trigger: ":sfs"
     label: "SAT - show only --fields Alias,State"
     replace: "--fields Alias,State"
+  - trigger: ":sbr"
+    label: "SAT - bootprep run"
+    replace: "sat bootprep run "
+  - trigger: ":suc"
+    label: "SAT - Bootprep to only update CFS"
+    replace: "--overwrite-configs --skip-existing-images --skip-existing-templates"
 
   #######
   # VCS #
@@ -66,9 +105,9 @@ matches:
     label: "VCS - clone a repo with populate credentials"
     replace: 'git clone https://"${VCS_USER}":"${VCS_PASS}"@api-gw-service-nmn.local/vcs/cray/uan-config-management'
 
-  #######
-  # Nex #
-  #######
+  #########
+  # Nexus #
+  #########
   - trigger: ":nexuscreds"
     label: "Nexus - populate credentials in env vars"
     replace: 'NEXUS_USER=$(kubectl get secret -n nexus nexus-admin-credential --template="{{.data.username}}"
@@ -76,7 +115,7 @@ matches:
       --template="{{.data.password}}" | base64 --decode)'
   - trigger: ":ppush"
     label: "Podman - Push a container image to Nexus"
-    replace: 'podman push --creds \"\$NEXUS_USER:\$NEXUS_PASS\"'
+    replace: 'podman push --creds "$NEXUS_USER:$NEXUS_PASS" '
 
   #######
   # CFS #
@@ -87,6 +126,9 @@ matches:
   - trigger: ":ccd"
     label: "CFS - describe a component by name or UUID"
     replace: "cray cfs components describe "
+  - trigger: ":ccu"
+    label: "CFS - update a component by xname"
+    replace: "cray cfs components update "
   - trigger: ":cfslogs"
     label: "CFS - show logs for a session by name or UUID"
     replace: ";kubectl -n services logs job/$(cray cfs sessions describe ${CFS_SESSION} --format json | jq -r '.status.session.job') -c ansible"
